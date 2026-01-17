@@ -28,6 +28,7 @@ import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -85,8 +86,20 @@ public class MoodRequestService {
         request.setStatus(MoodRequestStatus.PENDING);
         request.setExpiresAt(Instant.now().plus(60, ChronoUnit.MINUTES));
         moodRequestRepository.save(request);
-        userRepository.findById(partnerId)
-                .ifPresent(user -> telegramBotClient.sendMoodRequestNotification(user, request.getId()));
+        userRepository.findById(partnerId).ifPresent(user -> {
+            if (user.getTelegramChatId() != null) {
+                String botUsername = telegramBotClient.getBotUsername();
+                String miniAppName = telegramBotClient.getMiniAppName();
+                if (botUsername != null && !botUsername.isBlank() && miniAppName != null && !miniAppName.isBlank()) {
+                    String link = "https://t.me/" + botUsername + "/" + miniAppName
+                            + "?startapp=requestId=" + request.getId();
+                    telegramBotClient.sendMessage(user.getTelegramChatId(), "Партнёр запросил твоё состояние",
+                            Map.of("text", "Ответить", "url", link));
+                } else {
+                    telegramBotClient.sendMessage(user.getTelegramChatId(), "Партнёр запросил твоё состояние", null);
+                }
+            }
+        });
         return DtoMapper.toMoodRequestResponse(request);
     }
 

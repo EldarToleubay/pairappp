@@ -29,6 +29,7 @@ app:
     auth-max-age-seconds: ${TELEGRAM_AUTH_MAX_AGE_SECONDS:300}
     bot-username: ${TELEGRAM_BOT_USERNAME:}
     mini-app-name: ${TELEGRAM_MINI_APP_NAME:}
+    webhook-secret: ${TELEGRAM_WEBHOOK_SECRET:}
 
 springdoc:
   api-docs:

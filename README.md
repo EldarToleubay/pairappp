@@ -29,6 +29,7 @@ docker-compose up --build
 - `TELEGRAM_AUTH_MAX_AGE_SECONDS` (optional, default 300)
 - `TELEGRAM_BOT_USERNAME`
 - `TELEGRAM_MINI_APP_NAME`
+- `TELEGRAM_WEBHOOK_SECRET` (required for webhook)
 
 ## Telegram Mini App auth
 The frontend should send `initData` from the Telegram Mini App to the backend:
@@ -42,6 +43,13 @@ Example `initData` (shortened):
 ```
 query_id=AAH...&user=%7B%22id%22%3A12345%2C%22first_name%22%3A%22Alex%22%7D&auth_date=1717230000&hash=...
 ```
+
+## Telegram webhook setup
+Set the webhook with a secret query param:
+```
+https://your-domain.com/api/v1/telegram/webhook?secret=YOUR_SECRET
+```
+When the user sends `/start` to the bot, the backend stores `telegramChatId` and enables notifications.
 
 ## Example flow
 1. Register user A
@@ -89,5 +97,7 @@ curl -X GET http://localhost:8080/api/v1/mood-status/partner \
 ## Telegram flow example
 1. User opens Telegram Mini App and frontend sends `initData` to `/api/v1/auth/telegram`.
 2. Backend returns JWT; use it for API calls.
-3. When user A sends a mood request, partner receives a Telegram message with a link:
-`https://t.me/<BOT_USERNAME>/<MINI_APP>?requestId=<REQUEST_ID>`.
+3. User opens the bot and sends `/start` once to enable notifications.
+4. When user A sends a mood request, partner receives a Telegram message with a button:
+`https://t.me/<BOT_USERNAME>/<MINI_APP>?startapp=requestId=<REQUEST_ID>`.
+5. Mini App receives `start_param` via `Telegram.WebApp.initDataUnsafe.start_param`.

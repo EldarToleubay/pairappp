@@ -7,6 +7,7 @@ public record TelegramProperties(
         String botToken,
         Long authMaxAgeSeconds,
         String botUsername,
-        String miniAppName
+        String miniAppName,
+        String webhookSecret
 ) {
 }

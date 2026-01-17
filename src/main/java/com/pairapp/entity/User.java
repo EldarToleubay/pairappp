@@ -32,6 +32,9 @@ public class User {
     @Column(name = "telegram_user_id", unique = true)
     private Long telegramUserId;
 
+    @Column(name = "telegram_chat_id")
+    private Long telegramChatId;
+
     @Column(name = "telegram_username")
     private String telegramUsername;
 

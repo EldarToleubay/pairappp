@@ -1,14 +1,14 @@
 package com.pairapp.service;
 
 import com.pairapp.config.TelegramProperties;
-import com.pairapp.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 public class TelegramBotClient {
@@ -25,20 +25,27 @@ public class TelegramBotClient {
                 .build();
     }
 
-    public void sendMoodRequestNotification(User toUser, UUID requestId) {
-        if (toUser.getTelegramUserId() == null || properties.botToken() == null || properties.botToken().isBlank()) {
+    public String getBotUsername() {
+        return properties.botUsername();
+    }
+
+    public String getMiniAppName() {
+        return properties.miniAppName();
+    }
+
+    public void sendMessage(Long chatId, String text, Map<String, Object> inlineButton) {
+        if (chatId == null || properties.botToken() == null || properties.botToken().isBlank()) {
             return;
         }
-        if (properties.botUsername() == null || properties.miniAppName() == null) {
+        if (text == null || text.isBlank()) {
             return;
         }
-        String link = "https://t.me/" + properties.botUsername() + "/" + properties.miniAppName()
-                + "?requestId=" + requestId;
-        String text = "Партнёр запросил твоё состояние\n" + link;
-        Map<String, Object> payload = Map.of(
-                "chat_id", toUser.getTelegramUserId(),
-                "text", text
-        );
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("chat_id", chatId);
+        payload.put("text", text);
+        if (inlineButton != null) {
+            payload.put("reply_markup", Map.of("inline_keyboard", List.of(List.of(inlineButton))));
+        }
         try {
             restClient.post()
                     .uri("/sendMessage")
