@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: pairapp
+      POSTGRES_USER: pairapp
+      POSTGRES_PASSWORD: pairapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+  app:
+    build: .
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/pairapp
+      DB_USER: pairapp
+      DB_PASSWORD: pairapp
+      JWT_SECRET: change-me-in-prod-change-me-in-prod
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+volumes:
+  db_data:
