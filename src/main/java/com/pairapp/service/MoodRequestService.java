@@ -17,6 +17,7 @@ import com.pairapp.mapper.DtoMapper;
 import com.pairapp.repository.MoodRequestRepository;
 import com.pairapp.repository.MoodResponseRepository;
 import com.pairapp.repository.PairRepository;
+import com.pairapp.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,12 +40,17 @@ public class MoodRequestService {
     private final PairRepository pairRepository;
     private final MoodRequestRepository moodRequestRepository;
     private final MoodResponseRepository moodResponseRepository;
+    private final UserRepository userRepository;
+    private final TelegramBotClient telegramBotClient;
 
     public MoodRequestService(PairRepository pairRepository, MoodRequestRepository moodRequestRepository,
-                              MoodResponseRepository moodResponseRepository) {
+                              MoodResponseRepository moodResponseRepository, UserRepository userRepository,
+                              TelegramBotClient telegramBotClient) {
         this.pairRepository = pairRepository;
         this.moodRequestRepository = moodRequestRepository;
         this.moodResponseRepository = moodResponseRepository;
+        this.userRepository = userRepository;
+        this.telegramBotClient = telegramBotClient;
     }
 
     @Transactional
@@ -79,6 +85,8 @@ public class MoodRequestService {
         request.setStatus(MoodRequestStatus.PENDING);
         request.setExpiresAt(Instant.now().plus(60, ChronoUnit.MINUTES));
         moodRequestRepository.save(request);
+        userRepository.findById(partnerId)
+                .ifPresent(user -> telegramBotClient.sendMoodRequestNotification(user, request.getId()));
         return DtoMapper.toMoodRequestResponse(request);
     }
 

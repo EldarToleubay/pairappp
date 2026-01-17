@@ -11,6 +11,8 @@ import com.pairapp.exception.ApiException;
 import com.pairapp.repository.MoodRequestRepository;
 import com.pairapp.repository.MoodResponseRepository;
 import com.pairapp.repository.PairRepository;
+import com.pairapp.repository.UserRepository;
+import com.pairapp.service.TelegramBotClient;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -34,6 +36,10 @@ class MoodRequestServiceTest {
     private MoodRequestRepository moodRequestRepository;
     @Mock
     private MoodResponseRepository moodResponseRepository;
+    @Mock
+    private UserRepository userRepository;
+    @Mock
+    private TelegramBotClient telegramBotClient;
 
     @InjectMocks
     private MoodRequestService moodRequestService;

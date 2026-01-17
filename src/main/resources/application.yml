@@ -24,6 +24,11 @@ app:
     secret: ${JWT_SECRET:change-me-in-prod-change-me-in-prod}
     issuer: ${JWT_ISSUER:pairapp}
     access-token-ttl-minutes: ${JWT_TTL_MINUTES:720}
+  telegram:
+    bot-token: ${TELEGRAM_BOT_TOKEN:}
+    auth-max-age-seconds: ${TELEGRAM_AUTH_MAX_AGE_SECONDS:300}
+    bot-username: ${TELEGRAM_BOT_USERNAME:}
+    mini-app-name: ${TELEGRAM_MINI_APP_NAME:}
 
 springdoc:
   api-docs:

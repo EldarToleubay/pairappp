@@ -19,15 +19,22 @@ public class JwtService {
     }
 
     public String generateToken(UUID userId, String email) {
+        return generateToken(userId, email, "password");
+    }
+
+    public String generateToken(UUID userId, String email, String provider) {
         Instant now = Instant.now();
         Instant expiry = now.plusSeconds(properties.accessTokenTtlMinutes() * 60);
-        return Jwts.builder()
+        var builder = Jwts.builder()
                 .subject(userId.toString())
                 .issuer(properties.issuer())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(expiry))
-                .claim("email", email)
-                .signWith(Keys.hmacShaKeyFor(properties.secret().getBytes(StandardCharsets.UTF_8)))
+                .claim("provider", provider);
+        if (email != null) {
+            builder.claim("email", email);
+        }
+        return builder.signWith(Keys.hmacShaKeyFor(properties.secret().getBytes(StandardCharsets.UTF_8)))
                 .compact();
     }
 

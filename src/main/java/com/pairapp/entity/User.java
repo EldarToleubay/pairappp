@@ -23,11 +23,23 @@ public class User {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "email", nullable = false, unique = true)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "password_hash", nullable = false)
+    @Column(name = "password_hash")
     private String passwordHash;
+
+    @Column(name = "telegram_user_id", unique = true)
+    private Long telegramUserId;
+
+    @Column(name = "telegram_username")
+    private String telegramUsername;
+
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @Column(name = "created_at", nullable = false)
     private Instant createdAt;

@@ -3,6 +3,7 @@ package com.pairapp.controller;
 import com.pairapp.dto.AuthLoginRequest;
 import com.pairapp.dto.AuthRegisterRequest;
 import com.pairapp.dto.AuthResponse;
+import com.pairapp.dto.TelegramAuthRequest;
 import com.pairapp.service.AuthService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,5 +46,16 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@Valid @RequestBody AuthLoginRequest request) {
         return authService.login(request);
+    }
+
+    @Operation(summary = "Telegram Mini App auth", responses = {
+            @ApiResponse(responseCode = "200", description = "Telegram authenticated", content = @Content(
+                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = AuthResponse.class),
+                    examples = @ExampleObject(value = "{\\\"accessToken\\\":\\\"token\\\"}")))
+    })
+    @PostMapping("/telegram")
+    public AuthResponse telegram(@Valid @RequestBody TelegramAuthRequest request) {
+        return authService.telegramLogin(request.initData());
     }
 }

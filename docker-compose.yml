@@ -17,6 +17,10 @@ services:
       DB_USER: pairapp
       DB_PASSWORD: pairapp
       JWT_SECRET: change-me-in-prod-change-me-in-prod
+      TELEGRAM_BOT_TOKEN: change-me
+      TELEGRAM_AUTH_MAX_AGE_SECONDS: 300
+      TELEGRAM_BOT_USERNAME: your_bot_username
+      TELEGRAM_MINI_APP_NAME: couple-checkin
     ports:
       - "8080:8080"
     depends_on:
