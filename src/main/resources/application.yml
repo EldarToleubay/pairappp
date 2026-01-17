@@ -3,17 +3,18 @@ server:
 
 spring:
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/pairapp}
-    username: ${DB_USER:pairapp}
-    password: ${DB_PASSWORD:pairapp}
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     properties:
       hibernate:
-        format_sql: true
+        format_sql: false
+
   flyway:
-    enabled: true
+    enabled: false
 
 logging:
   level:
@@ -25,11 +26,11 @@ app:
     issuer: ${JWT_ISSUER:pairapp}
     access-token-ttl-minutes: ${JWT_TTL_MINUTES:720}
   telegram:
-    bot-token: ${TELEGRAM_BOT_TOKEN:}
+    bot-token: ${TELEGRAM_BOT_TOKEN:8555778813:AAGysmShHUeJtJQaS1ng672a8FN65n-BX1E}
     auth-max-age-seconds: ${TELEGRAM_AUTH_MAX_AGE_SECONDS:300}
-    bot-username: ${TELEGRAM_BOT_USERNAME:}
+    bot-username: ${TELEGRAM_BOT_USERNAME:pairapptestbot}
     mini-app-name: ${TELEGRAM_MINI_APP_NAME:}
-    webhook-secret: ${TELEGRAM_WEBHOOK_SECRET:}
+    webhook-secret: ${TELEGRAM_WEBHOOK_SECRET:local-secret-123}
 
 springdoc:
   api-docs:
