@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/mood-status")
+@CrossOrigin("*")
 public class MoodStatusController {
     private final MoodStatusService moodStatusService;
 

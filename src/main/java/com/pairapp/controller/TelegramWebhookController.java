@@ -6,14 +6,11 @@ import com.pairapp.repository.UserRepository;
 import com.pairapp.service.TelegramBotClient;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/telegram")
+@CrossOrigin("*")
 public class TelegramWebhookController {
     private final TelegramProperties properties;
     private final UserRepository userRepository;
